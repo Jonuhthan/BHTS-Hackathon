@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nonessential Purchase Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Nonessential Purchase Checker</h2>
+    <label for="salary">Monthly Salary:</label>
+    <input type="number" id="salary" placeholder="Enter your monthly salary">
+
+    <label for="purchase">Purchase Amount:</label>
+    <input type="number" id="purchase" placeholder="Enter the purchase amount">
+
+    <button onclick="checkPurchase()">Check if Nonessential</button>
+
+    <p id="result"></p>
+</div>
+
+<script>
+    function checkPurchase() {
+        const salary = parseFloat(document.getElementById('salary').value);
+        const purchase = parseFloat(document.getElementById('purchase').value);
+        const threshold = salary * 0.1;
+
+        if (isNaN(salary) || isNaN(purchase)) {
+            document.getElementById('result').textContent = 'Please enter valid numbers for both salary and purchase amount.';
+            return;
+        }
+
+        if (purchase > threshold) {
+            document.getElementById('result').textContent = 'The purchase is considered nonessential.';
+        } else {
+            document.getElementById('result').textContent = 'The purchase is considered essential.';
+        }
+    }
+</script>
+
+</body>
+</html>
