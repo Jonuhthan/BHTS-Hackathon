@@ -26,8 +26,13 @@ app.post('/login', (req, res) => {
     }
   });
 
-// const homeRouter = require('./routes/home_routes');
-// app.use('/home', homeRouter);
+app.get('/home', (req, res) => {
+    res.send("This is the home page.");
+});
+
+app.get('/settings', (req, res) => {
+    res.send("This is the settings page");
+});
 
 
 app.listen(PORT, () => {
