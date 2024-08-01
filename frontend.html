@@ -3,56 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nonessential Purchase Checker</title>
+    <title>Savings Protector</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
             margin: 20px;
         }
         .container {
-            max-width: 400px;
-            margin: auto;
-            padding: 20px;
             border: 1px solid #ccc;
             border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
         }
-        input, button {
+        input, select, button {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .tab {
+            margin: 10px 0;
+        }
+        .tab button {
+            padding: 10px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .result {
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Nonessential Purchase Checker</h2>
-    <label for="salary">Monthly Salary:</label>
-    <input type="number" id="salary" placeholder="Enter your monthly salary">
+<div class="tab">
+    <button onclick="openPage('installPage')">Install Page</button>
+    <button onclick="openPage('saveMode')">Extension: Save Mode</button>
+    <button onclick="openPage('investMode')">Extension: Invest Mode</button>
+    <button onclick="openPage('settings')">Settings</button>
+</div>
 
-    <label for="purchase">Purchase Amount:</label>
-    <input type="number" id="purchase" placeholder="Enter the purchase amount">
+<div id="installPage" class="container">
+    <h2>Savings Protector</h2>
+    <label for="name">NAME</label>
+    <input type="text" id="name" placeholder="Ex. John Doe">
 
-    <button onclick="checkPurchase()">Check if Nonessential</button>
+    <label for="wageType">SELECT WAGE TYPE</label>
+    <select id="wageType">
+        <option value="">Select</option>
+        <option value="hourly">Hourly</option>
+        <option value="monthly">Monthly</option>
+        <option value="annual">Annual</option>
+    </select>
 
-    <p id="result"></p>
+    <label for="wages">INPUT WAGES</label>
+    <input type="number" id="wages" placeholder="Ex. 50,000">
+
+    <button onclick="getStarted()">Get Started</button>
+</div>
+
+<div id="saveMode" class="container" style="display:none;">
+    <h2>Savings Protector</h2>
+    <p>Hey, <span id="userName1"></span></p>
+    <p>Are you sure you want to purchase this?</p>
+    <p>You want to spend <span class="result" id="spendAmount1">$57.65</span></p>
+    <p>This equates to <span class="result" id="equatesHours"></span> hours of work</p>
+</div>
+
+<div id="investMode" class="container" style="display:none;">
+    <h2>Savings Protector</h2>
+    <p>Hey, <span id="userName2"></span></p>
+    <p>Are you sure you want to purchase this?</p>
+    <p>You want to spend <span class="result" id="spendAmount2">$57.65</span></p>
+    <p>This equates to <span class="result" id="equatesStock"></span> shares of Apple stock</p>
+</div>
+
+<div id="settings" class="container" style="display:none;">
+    <h2>Settings</h2>
+    <label>SAVE MODE <input type="radio" name="mode" onclick="toggleMode('save')" checked></label>
+    <label>INVEST MODE <input type="radio" name="mode" onclick="toggleMode('invest')"></label>
+
+    <label for="editWageType">EDIT WAGE TYPE</label>
+    <select id="editWageType">
+        <option value="">Select</option>
+        <option value="hourly">Hourly</option>
+        <option value="monthly">Monthly</option>
+        <option value="annual">Annual</option>
+    </select>
+
+    <label for="editWages">EDIT WAGES</label>
+    <input type="number" id="editWages" placeholder="Ex. 50,000">
 </div>
 
 <script>
-    function checkPurchase() {
-        const salary = parseFloat(document.getElementById('salary').value);
-        const purchase = parseFloat(document.getElementById('purchase').value);
-        const threshold = salary * 0.1;
+    function openPage(pageName) {
+        const pages = document.querySelectorAll('.container');
+        pages.forEach(page => page.style.display = 'none');
+        document.getElementById(pageName).style.display = 'block';
+    }
 
-        if (isNaN(salary) || isNaN(purchase)) {
-            document.getElementById('result').textContent = 'Please enter valid numbers for both salary and purchase amount.';
-            return;
+    function getStarted() {
+        const name = document.getElementById('name').value;
+        const wageType = document.getElementById('wageType').value;
+        const wages = document.getElementById('wages').value;
+
+        document.getElementById('userName1').textContent = name;
+        document.getElementById('userName2').textContent = name;
+
+        let spendAmount = 57.65;
+        let equatesHours = 0;
+        let equatesStock = 0.26; // Example stock value
+
+        if (wageType === 'hourly') {
+            equatesHours = (spendAmount / wages).toFixed(2);
+        } else if (wageType === 'monthly') {
+            equatesHours = ((spendAmount / wages) * 160).toFixed(2); // Assuming 160 work hours in a month
+        } else if (wageType === 'annual') {
+            equatesHours = ((spendAmount / wages) * 2080).toFixed(2); // Assuming 2080 work hours in a year
         }
 
-        if (purchase > threshold) {
-            document.getElementById('result').textContent = 'The purchase is considered nonessential.';
-        } else {
-            document.getElementById('result').textContent = 'The purchase is considered essential.';
+        document.getElementById('equatesHours').textContent = equatesHours;
+        document.getElementById('equatesStock').textContent = equatesStock;
+
+        openPage('saveMode');
+    }
+
+    function toggleMode(mode) {
+        if (mode === 'save') {
+            document.getElementById('spendAmount1').style.display = 'block';
+            document.getElementById('equatesHours').style.display = 'block';
+            document.getElementById('spendAmount2').style.display = 'none';
+            document.getElementById('equatesStock').style.display = 'none';
+        } else if (mode === 'invest') {
+            document.getElementById('spendAmount1').style.display = 'none';
+            document.getElementById('equatesHours').style.display = 'none';
+            document.getElementById('spendAmount2').style.display = 'block';
+            document.getElementById('equatesStock').style.display = 'block';
         }
     }
 </script>
