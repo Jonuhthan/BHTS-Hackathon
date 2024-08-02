@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "cors": "^2.8.5"
-  }
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "start:dev": "webpack-dev-server --open --config webpack/webpack.config.dev.js"
 }

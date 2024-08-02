@@ -6,23 +6,25 @@ app.use(cors());
 
 app.use(express.json());
 
+const apiKey = 'IRJBI8Q6NR6EC2X1'
 const getInvestUrl = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=IRJBI8Q6NR6EC2X1'
-const [stockinfo, setStockInfo] = useState([]);
+const [stockInfo, setStockInfo] = useState([]);
 
 const GetInvestInfo = () => {
 
     fetch(getInvestUrl, {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'accept': 'application/json',
-            'Authorization': 'IRJBI8Q6NR6EC2X1',
+            'Authorization': `Bearer ${apiKey}`,
         },
         body: JSON.stringify()
     })
     .then(response => response.json())
     .then(responseJSON => {
         setStockInfo(responseJSON.data)
+        console.log(stockInfo)
     .catch(error => {
         console.error('Error:', error);
     });
